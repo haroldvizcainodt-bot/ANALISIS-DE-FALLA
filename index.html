@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Falla y Lecciones Aprendidas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>ALFA</h1>
+                <p class="subtitle">Análisis de Falla</p>
+            </div>
+
+            <div class="user-section">
+                <div class="user-info">
+                    <span class="user-avatar" id="userAvatar">T</span>
+                    <div>
+                        <p class="user-name" id="userName">Técnico</p>
+                        <p class="user-role" id="userRole">Consulta</p>
+                    </div>
+                </div>
+                <button id="changeRoleBtn" class="change-role-btn">Cambiar rol</button>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-page="resumen">
+                    <span class="icon">📊</span> Resumen Ejecutivo
+                </button>
+                <button class="nav-item" data-page="registrar">
+                    <span class="icon">📝</span> Registrar Falla
+                </button>
+                <button class="nav-item" data-page="chat">
+                    <span class="icon">💬</span> Chat Técnico
+                </button>
+                <button class="nav-item" data-page="base">
+                    <span class="icon">📚</span> Base de Conocimiento
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="ia-toggle">
+                    <label>Modo IA limitado</label>
+                    <input type="checkbox" id="iaToggle">
+                    <span class="ia-limit" id="iaLimit">5/5</span>
+                </div>
+                <button id="adminBtn" class="admin-btn" style="display: none;">⚙️ Admin</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h2 id="pageTitle">Resumen Ejecutivo</h2>
+                </div>
+                <div class="header-right">
+                    <span id="timestamp" class="timestamp"></span>
+                </div>
+            </header>
+
+            <!-- Content Pages -->
+            <div class="pages-container">
+                <!-- Page: Resumen Ejecutivo -->
+                <section id="resumen" class="page active">
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <span class="kpi-icon">📋</span>
+                            <div>
+                                <p class="kpi-label">Casos Registrados</p>
+                                <p class="kpi-value" id="kpiCasos">0</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-icon">⚠️</span>
+                            <div>
+                                <p class="kpi-label">Críticas / Altas</p>
+                                <p class="kpi-value" id="kpiCriticas">0</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-icon">📸</span>
+                            <div>
+                                <p class="kpi-label">Con Evidencia</p>
+                                <p class="kpi-value" id="kpiEvidencia">0</p>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-icon">✅</span>
+                            <div>
+                                <p class="kpi-label">Soluciones Efectivas</p>
+                                <p class="kpi-value" id="kpiEfectivas">0%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="chart-card">
+                            <h3>Máquinas con Mayor Recurrencia</h3>
+                            <div id="recurrenTable" class="table-container"></div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Casos Recientes</h3>
+                            <div id="recentTable" class="table-container"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page: Registrar Falla -->
+                <section id="registrar" class="page">
+                    <div class="form-container">
+                        <h2>Registrar Falla Resuelta</h2>
+                        <form id="fallaForm">
+                            <div class="form-section">
+                                <h4>Información General</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Fecha *</label>
+                                        <input type="date" id="fecha" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Planta *</label>
+                                        <input type="text" id="planta" placeholder="P1, P7, etc." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Área *</label>
+                                        <input type="text" id="area" placeholder="Producción, Utilities, etc." required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h4>Equipo</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Máquina *</label>
+                                        <input type="text" id="maquina" placeholder="Nombre del equipo" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Código de Equipo *</label>
+                                        <input type="text" id="codigoEquipo" placeholder="EQ-001" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sistema/Componente *</label>
+                                        <input type="text" id="componente" placeholder="Motor, sensor, variador, etc." required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h4>Descripción de la Falla</h4>
+                                <div class="form-row">
+                                    <div class="form-group full">
+                                        <label>Descripción de la Falla *</label>
+                                        <textarea id="descripcion" placeholder="Descripción detallada de la falla" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group full">
+                                        <label>Síntomas Observados *</label>
+                                        <textarea id="sintomas" placeholder="Qué observó que indicaba el problema" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h4>Análisis y Resolución</h4>
+                                <div class="form-row">
+                                    <div class="form-group full">
+                                        <label>Causa Raíz Confirmada *</label>
+                                        <textarea id="causaRaiz" placeholder="Causa raíz identificada y confirmada" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group full">
+                                        <label>Acción Correctiva Realizada *</label>
+                                        <textarea id="accionCorrectiva" placeholder="Acciones ejecutadas para resolver" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group full">
+                                        <label>Repuestos Usados</label>
+                                        <textarea id="repuestos" placeholder="Detalle de repuestos utilizados"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h4>Tiempos y Criticidad</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Tiempo de Parada (horas) *</label>
+                                        <input type="number" id="tiempoParada" min="0" step="0.5" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tiempo de Reparación (horas) *</label>
+                                        <input type="number" id="tiempoReparacion" min="0" step="0.5" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Criticidad *</label>
+                                        <select id="criticidad" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="Baja">Baja</option>
+                                            <option value="Media">Media</option>
+                                            <option value="Alta">Alta</option>
+                                            <option value="Crítica">Crítica</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h4>Información Operativa</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Orden de Trabajo *</label>
+                                        <input type="text" id="ordenTrabajo" placeholder="OT-2024-001" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Responsable *</label>
+                                        <input type="text" id="responsable" placeholder="Nombre del técnico" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Solución Efectiva *</label>
+                                        <select id="solucionEfectiva" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="Sí">Sí</option>
+                                            <option value="Parcial">Parcial</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h4>Evidencia Fotográfica</h4>
+                                <div class="image-upload">
+                                    <input type="file" id="imageInput" accept="image/*" multiple>
+                                    <label for="imageInput" class="upload-label">📷 Cargar imágenes</label>
+                                </div>
+                                <div id="imagePreviews" class="image-previews"></div>
+                            </div>
+
+                            <div class="form-section">
+                                <h4>Lecciones Aprendidas y Recomendaciones</h4>
+                                <div class="form-row">
+                                    <div class="form-group full">
+                                        <label>Lección Aprendida *</label>
+                                        <textarea id="leccionAprendida" placeholder="¿Qué se aprendió de esta falla?" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group full">
+                                        <label>Recomendación Preventiva</label>
+                                        <textarea id="recomendacionPreventiva" placeholder="Recomendaciones para prevenir esta falla en el futuro"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Registrar Falla</button>
+                                <button type="reset" class="btn btn-secondary">Limpiar Formulario</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Page: Chat Técnico -->
+                <section id="chat" class="page">
+                    <div class="chat-container">
+                        <div class="chat-history" id="chatHistory"></div>
+                        <div class="chat-input-area">
+                            <textarea id="chatInput" placeholder="Pregunta sobre fallas, síntomas, soluciones, causas raíz..."></textarea>
+                            <button id="chatSendBtn" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page: Base de Conocimiento -->
+                <section id="base" class="page">
+                    <div class="base-header">
+                        <h2>Base de Conocimiento</h2>
+                        <input type="text" id="baseSearch" placeholder="Buscar por máquina, componente, área...">
+                    </div>
+                    <div class="table-container">
+                        <table id="baseTable">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Planta</th>
+                                    <th>Máquina</th>
+                                    <th>Componente</th>
+                                    <th>Criticidad</th>
+                                    <th>Acción / Lección</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="baseTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Resumen de Caso -->
+    <div id="casoModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close">&times;</span>
+            <div id="casoModalBody"></div>
+            <div class="modal-footer">
+                <button id="exportPdfBtn" class="btn btn-primary">📄 Exportar PDF</button>
+                <button class="close-modal btn btn-secondary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Cambiar Rol -->
+    <div id="roleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Cambiar Rol de Usuario</h3>
+            <div class="role-options">
+                <button class="role-option" data-role="tecnico">
+                    <span class="role-icon">👨‍🔧</span>
+                    <span>Técnico</span>
+                    <span class="role-desc">Consulta solamente</span>
+                </button>
+                <button class="role-option" data-role="planeador">
+                    <span class="role-icon">📋</span>
+                    <span>Planeador</span>
+                    <span class="role-desc">Registra fallas</span>
+                </button>
+                <button class="role-option" data-role="admin">
+                    <span class="role-icon">⚙️</span>
+                    <span>Administrador</span>
+                    <span class="role-desc">Control total</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: PIN -->
+    <div id="pinModal" class="modal">
+        <div class="modal-content modal-small">
+            <span class="close">&times;</span>
+            <h3>Ingrese PIN</h3>
+            <input type="password" id="pinInput" placeholder="****" maxlength="4">
+            <div class="modal-footer">
+                <button id="confirmPinBtn" class="btn btn-primary">Confirmar</button>
+                <button class="close-modal btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Admin Panel -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Panel de Administración</h3>
+            <div class="admin-panel">
+                <button id="restaurarDemoBtn" class="btn btn-warning">🔄 Restaurar Datos Demo</button>
+                <button id="limpiarLocalBtn" class="btn btn-danger">🗑️ Limpiar LocalStorage</button>
+                <div class="admin-info">
+                    <p>Casos registrados: <strong id="adminCasoCount">0</strong></p>
+                    <p>Almacenamiento usado: <strong id="storageUsed">0</strong> KB</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
