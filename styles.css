@@ -1028,20 +1028,23 @@ table tr:hover {
     }
 
     .nav-menu {
-        flex-direction: row;
-        flex-wrap: nowrap;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
         width: 100%;
         margin-bottom: 0;
         gap: 4px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
     }
 
     .nav-item {
-        padding: 8px 10px;
-        min-width: 60px;
+        padding: 10px;
         font-size: 11px;
-        flex-shrink: 0;
+        text-align: center;
+    }
+    
+    .nav-item .icon {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 2px;
     }
 
     .sidebar-footer {
@@ -1113,9 +1116,13 @@ table tr:hover {
     }
 
     .chat-container {
-        height: 100%;
         display: flex;
         flex-direction: column;
+        height: 100%;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
     }
 
     .chat-history {
@@ -1123,29 +1130,41 @@ table tr:hover {
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 
     .chat-bubble {
         max-width: 85%;
+        padding: 10px 12px;
         font-size: 13px;
-        padding: 8px 10px;
     }
 
     .chat-input-area {
-        padding: 10px;
-        flex-shrink: 0;
+        display: flex;
+        gap: 8px;
+        padding: 12px;
         border-top: 1px solid var(--border-color);
+        background: var(--bg-input);
+        flex-shrink: 0;
     }
 
     #chatInput {
+        flex: 1;
         padding: 10px;
         font-size: 16px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
         min-height: 40px;
     }
     
     #chatSendBtn {
+        padding: 10px 16px;
         min-height: 40px;
-        padding: 8px 12px;
+        align-self: flex-end;
     }
 
     .base-header {
